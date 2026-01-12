@@ -1,338 +1,459 @@
-╔════════════════════════════════════════════════════════════════════╗
-║          MT4 TELEGRAM ALERT INDICATOR - CONFIGURATION TEMPLATE      ║
-╚════════════════════════════════════════════════════════════════════╝
+//+------------------------------------------------------------------+
+//|                   MT4 Multi-Indicator Telegram Alert System      |
+//|                        Configuration Template v2.0                |
+//+------------------------------------------------------------------+
+// Copy these settings and paste into your indicator configuration
+// Adjust values based on your trading strategy
+//+------------------------------------------------------------------+
 
-Instructions:
-1. Fill in your bot token and chat ID below
-2. Choose a configuration preset that matches your trading style
-3. Copy the settings into MT4 indicator settings dialog
-4. Adjust parameters as needed for your strategy
+========== TELEGRAM SETTINGS ==========
 
-════════════════════════════════════════════════════════════════════
+TelegramBotToken = "YOUR_BOT_TOKEN_HERE"
+// Get from @BotFather in Telegram
+// Example: "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
 
-YOUR TELEGRAM CREDENTIALS:
-──────────────────────────────────────────────────────────────────
-
-TelegramBotToken = ""
-└─ Get from: @BotFather in Telegram
-└─ Format: 123456789:ABCdefGHIjklMNOpqrsTUVwxyz
-└─ Instructions: Send /newbot to @BotFather
-
-TelegramChatID = ""
-└─ Get from: https://api.telegram.org/bot<TOKEN>/getUpdates
-└─ Format: 123456789 (personal) or -123456789 (group)
-└─ Instructions: Send message to bot first, then check getUpdates
-
-════════════════════════════════════════════════════════════════════
-
-PRESET CONFIGURATIONS:
-Choose one of the following presets and copy to MT4
-
-════════════════════════════════════════════════════════════════════
-
-[PRESET 1] DAY TRADING - BALANCED (RECOMMENDED FOR BEGINNERS)
-──────────────────────────────────────────────────────────────────
-
-Timeframe: H1 or M30
-Expected Signals: 3-8 per day
-Risk Level: Medium
-
-========== Telegram Settings ==========
-TelegramBotToken = "YOUR_TOKEN_HERE"
 TelegramChatID = "YOUR_CHAT_ID_HERE"
+// Get from https://api.telegram.org/botYOUR_TOKEN/getUpdates
+// Example: "123456789" (personal) or "-123456789" (group)
+
 EnableTelegramAlerts = true
+// Master switch for all Telegram notifications
+// Set to false to disable Telegram (other alerts still work)
+
 MaxRetries = 3
+// Number of times to retry if Telegram API fails
+// Recommended: 3 (balance between reliability and speed)
+
 RetryDelayMS = 2000
+// Milliseconds to wait between retry attempts
+// Recommended: 2000 (2 seconds)
 
-========== Signal Settings ==========
-FastMA_Period = 10
-SlowMA_Period = 30
-MA_Method = Simple (SMA)
-MA_Price = Close
-EnableBuySignals = true
-EnableSellSignals = true
+========== INDICATOR 1 SETTINGS ==========
 
-========== Alert Settings ==========
+Indicator1_Enable = true
+// Enable or disable this indicator slot
+
+Indicator1_Name = "Indicator 1"
+// Custom name for display in alerts
+// Example: "RSI Divergence", "MA Crossover", "MACD Signal"
+
+Indicator1_BuyBuffer = 0
+// Buffer number for buy/call signals (0-7)
+// Use Data Window (Ctrl+D) to find correct buffer
+
+Indicator1_SellBuffer = 1
+// Buffer number for sell/put signals (0-7)
+// Usually 1 if buy buffer is 0, but verify with Data Window
+
+Indicator1_Timing = 0
+// When to trigger signal:
+// 0 = Same Candle (immediate, may repaint)
+// 1 = Next Candle (confirmed, no repainting)
+
+Indicator1_Timeframe = 0
+// Timeframe to analyze:
+// 0 = Current (use chart timeframe)
+// 1 = M1
+// 5 = M5
+// 15 = M15
+// 30 = M30
+// 60 = H1
+// 240 = H4
+// 1440 = D1
+// 10080 = W1
+
+========== INDICATOR 2 SETTINGS ==========
+
+Indicator2_Enable = false
+// Enable or disable this indicator slot
+
+Indicator2_Name = "Indicator 2"
+// Custom name for display in alerts
+
+Indicator2_BuyBuffer = 0
+// Buffer number for buy/call signals (0-7)
+
+Indicator2_SellBuffer = 1
+// Buffer number for sell/put signals (0-7)
+
+Indicator2_Timing = 0
+// 0 = Same Candle | 1 = Next Candle
+
+Indicator2_Timeframe = 0
+// Timeframe to analyze (see Indicator 1 for values)
+
+========== INDICATOR 3 SETTINGS ==========
+
+Indicator3_Enable = false
+// Enable or disable this indicator slot
+
+Indicator3_Name = "Indicator 3"
+// Custom name for display in alerts
+
+Indicator3_BuyBuffer = 0
+// Buffer number for buy/call signals (0-7)
+
+Indicator3_SellBuffer = 1
+// Buffer number for sell/put signals (0-7)
+
+Indicator3_Timing = 0
+// 0 = Same Candle | 1 = Next Candle
+
+Indicator3_Timeframe = 0
+// Timeframe to analyze (see Indicator 1 for values)
+
+========== CONFIRMATION SETTINGS ==========
+
+ConfirmMode = 0
+// How indicators must agree to trigger alert:
+// 0 = Single (any 1 indicator triggers)
+// 1 = All (all enabled indicators must confirm)
+// 2 = Majority (at least 2 indicators must confirm)
+// 3 = Any (same as Single)
+
+========== ALERT SETTINGS ==========
+
 ShowArrowsOnChart = true
+// Display buy/sell arrows on chart
+// Green arrow below = Buy | Red arrow above = Sell
+
 SendPopupAlert = true
+// Show MT4 popup alert window when signal triggers
+
 SendEmailAlert = false
+// Send email alert (requires MT4 email configuration)
+// Configure in MT4: Tools → Options → Email
+
 PlaySoundAlert = true
+// Play sound when signal triggers
+
 AlertSoundFile = "alert.wav"
+// Sound file to play (must be in MT4/Sounds folder)
+// Default MT4 sounds: alert.wav, alert2.wav, connect.wav, etc.
 
-========== Advanced Settings ==========
-MinBarsBetweenSignals = 5
-AlertOnlyOnNewBar = true
+========== ADVANCED SETTINGS ==========
+
+DuplicatePreventionBars = 5
+// Minimum bars between duplicate alerts of same type
+// Higher value = fewer alerts, less spam
+// Lower value = more responsive, may get duplicates
+
 EnableDebugMode = false
+// Enable detailed logging in MT4 Terminal (Experts tab)
+// Set to true for troubleshooting
+// Set to false for normal operation
 
-════════════════════════════════════════════════════════════════════
+//+------------------------------------------------------------------+
+//|                     PRESET CONFIGURATIONS                         |
+//+------------------------------------------------------------------+
 
-[PRESET 2] SCALPING - HIGH FREQUENCY
-──────────────────────────────────────────────────────────────────
+========== PRESET 1: SINGLE INDICATOR - SIMPLE SETUP ==========
 
-Timeframe: M5 or M1
-Expected Signals: 10-20 per day
-Risk Level: High
-
-========== Telegram Settings ==========
 TelegramBotToken = "YOUR_TOKEN_HERE"
 TelegramChatID = "YOUR_CHAT_ID_HERE"
 EnableTelegramAlerts = true
-MaxRetries = 3
-RetryDelayMS = 1000
 
-========== Signal Settings ==========
-FastMA_Period = 5
-SlowMA_Period = 15
-MA_Method = Exponential (EMA)
-MA_Price = Close
-EnableBuySignals = true
-EnableSellSignals = true
+Indicator1_Enable = true
+Indicator1_Name = "My Indicator"
+Indicator1_BuyBuffer = 0
+Indicator1_SellBuffer = 1
+Indicator1_Timing = 0
+Indicator1_Timeframe = 0
 
-========== Alert Settings ==========
-ShowArrowsOnChart = true
-SendPopupAlert = false
-SendEmailAlert = false
-PlaySoundAlert = true
-AlertSoundFile = "alert.wav"
+Indicator2_Enable = false
+Indicator3_Enable = false
 
-========== Advanced Settings ==========
-MinBarsBetweenSignals = 2
-AlertOnlyOnNewBar = true
+ConfirmMode = 0  // Single indicator mode
+DuplicatePreventionBars = 5
 EnableDebugMode = false
 
-════════════════════════════════════════════════════════════════════
+========== PRESET 2: RSI + STOCHASTIC CONFIRMATION ==========
 
-[PRESET 3] SWING TRADING - LONG TERM
-──────────────────────────────────────────────────────────────────
-
-Timeframe: H4 or D1
-Expected Signals: 1-3 per week
-Risk Level: Low
-
-========== Telegram Settings ==========
 TelegramBotToken = "YOUR_TOKEN_HERE"
 TelegramChatID = "YOUR_CHAT_ID_HERE"
 EnableTelegramAlerts = true
-MaxRetries = 3
-RetryDelayMS = 2000
 
-========== Signal Settings ==========
-FastMA_Period = 20
-SlowMA_Period = 50
-MA_Method = Simple (SMA)
-MA_Price = Close
-EnableBuySignals = true
-EnableSellSignals = true
+Indicator1_Enable = true
+Indicator1_Name = "RSI Oversold/Overbought"
+Indicator1_BuyBuffer = 0
+Indicator1_SellBuffer = 1
+Indicator1_Timing = 0
+Indicator1_Timeframe = 60  // H1
 
-========== Alert Settings ==========
-ShowArrowsOnChart = true
-SendPopupAlert = true
-SendEmailAlert = true
-PlaySoundAlert = true
-AlertSoundFile = "alert2.wav"
+Indicator2_Enable = true
+Indicator2_Name = "Stochastic Cross"
+Indicator2_BuyBuffer = 0
+Indicator2_SellBuffer = 1
+Indicator2_Timing = 0
+Indicator2_Timeframe = 60  // H1
 
-========== Advanced Settings ==========
-MinBarsBetweenSignals = 10
-AlertOnlyOnNewBar = true
+Indicator3_Enable = false
+
+ConfirmMode = 1  // All indicators must confirm
+DuplicatePreventionBars = 8
 EnableDebugMode = false
 
-════════════════════════════════════════════════════════════════════
+========== PRESET 3: MULTI-TIMEFRAME MA CROSSOVER ==========
 
-[PRESET 4] CONSERVATIVE - GOLDEN CROSS/DEATH CROSS
-──────────────────────────────────────────────────────────────────
-
-Timeframe: H4 or D1
-Expected Signals: 1-2 per month
-Risk Level: Very Low
-
-========== Telegram Settings ==========
 TelegramBotToken = "YOUR_TOKEN_HERE"
 TelegramChatID = "YOUR_CHAT_ID_HERE"
 EnableTelegramAlerts = true
-MaxRetries = 3
-RetryDelayMS = 2000
 
-========== Signal Settings ==========
-FastMA_Period = 50
-SlowMA_Period = 200
-MA_Method = Exponential (EMA)
-MA_Price = Close
-EnableBuySignals = true
-EnableSellSignals = true
+Indicator1_Enable = true
+Indicator1_Name = "MA Cross H1"
+Indicator1_BuyBuffer = 0
+Indicator1_SellBuffer = 1
+Indicator1_Timing = 0
+Indicator1_Timeframe = 60  // H1
 
-========== Alert Settings ==========
-ShowArrowsOnChart = true
-SendPopupAlert = true
-SendEmailAlert = true
-PlaySoundAlert = true
-AlertSoundFile = "alert.wav"
+Indicator2_Enable = true
+Indicator2_Name = "MA Cross H4"
+Indicator2_BuyBuffer = 0
+Indicator2_SellBuffer = 1
+Indicator2_Timing = 0
+Indicator2_Timeframe = 240  // H4
 
-========== Advanced Settings ==========
-MinBarsBetweenSignals = 20
-AlertOnlyOnNewBar = true
+Indicator3_Enable = true
+Indicator3_Name = "MA Cross D1"
+Indicator3_BuyBuffer = 0
+Indicator3_SellBuffer = 1
+Indicator3_Timing = 0
+Indicator3_Timeframe = 1440  // D1
+
+ConfirmMode = 2  // Majority (at least 2 of 3)
+DuplicatePreventionBars = 10
 EnableDebugMode = false
 
-════════════════════════════════════════════════════════════════════
+========== PRESET 4: SCALPING - MULTIPLE CONFIRMATIONS ==========
 
-[PRESET 5] TESTING - QUICK SIGNAL GENERATION
-──────────────────────────────────────────────────────────────────
-
-Timeframe: M1
-Expected Signals: Many (for testing only)
-Risk Level: N/A (Testing only)
-
-⚠️ USE ONLY FOR TESTING TELEGRAM CONNECTION ⚠️
-
-========== Telegram Settings ==========
 TelegramBotToken = "YOUR_TOKEN_HERE"
 TelegramChatID = "YOUR_CHAT_ID_HERE"
 EnableTelegramAlerts = true
-MaxRetries = 3
-RetryDelayMS = 1000
 
-========== Signal Settings ==========
-FastMA_Period = 3
-SlowMA_Period = 5
-MA_Method = Simple (SMA)
-MA_Price = Close
-EnableBuySignals = true
-EnableSellSignals = true
+Indicator1_Enable = true
+Indicator1_Name = "Fast RSI M5"
+Indicator1_BuyBuffer = 0
+Indicator1_SellBuffer = 1
+Indicator1_Timing = 1  // Next candle (more reliable)
+Indicator1_Timeframe = 5  // M5
 
-========== Alert Settings ==========
-ShowArrowsOnChart = true
-SendPopupAlert = false
-SendEmailAlert = false
-PlaySoundAlert = false
-AlertSoundFile = "alert.wav"
+Indicator2_Enable = true
+Indicator2_Name = "Bollinger Touch M5"
+Indicator2_BuyBuffer = 0
+Indicator2_SellBuffer = 1
+Indicator2_Timing = 1  // Next candle
+Indicator2_Timeframe = 5  // M5
 
-========== Advanced Settings ==========
-MinBarsBetweenSignals = 1
-AlertOnlyOnNewBar = false
-EnableDebugMode = true
+Indicator3_Enable = true
+Indicator3_Name = "Volume Spike M5"
+Indicator3_BuyBuffer = 0
+Indicator3_SellBuffer = 1
+Indicator3_Timing = 0  // Same candle (immediate volume check)
+Indicator3_Timeframe = 5  // M5
 
-════════════════════════════════════════════════════════════════════
+ConfirmMode = 2  // Majority (at least 2 of 3)
+DuplicatePreventionBars = 3  // Allow more frequent signals for scalping
+EnableDebugMode = false
 
-PARAMETER EXPLANATION:
-──────────────────────────────────────────────────────────────────
+========== PRESET 5: CONSERVATIVE SWING TRADING ==========
 
-Telegram Settings:
-  • TelegramBotToken: Your unique bot token from @BotFather
-  • TelegramChatID: Your chat ID (personal or group)
-  • EnableTelegramAlerts: Turn Telegram alerts on/off
-  • MaxRetries: How many times to retry if API call fails
-  • RetryDelayMS: Milliseconds to wait between retries
+TelegramBotToken = "YOUR_TOKEN_HERE"
+TelegramChatID = "YOUR_CHAT_ID_HERE"
+EnableTelegramAlerts = true
 
-Signal Settings:
-  • FastMA_Period: Period for fast moving average (lower = more sensitive)
-  • SlowMA_Period: Period for slow moving average (higher = less sensitive)
-  • MA_Method: Calculation method (Simple, Exponential, etc.)
-  • MA_Price: Which price to use (Close, Open, High, Low, etc.)
-  • EnableBuySignals: Receive alerts for buy signals
-  • EnableSellSignals: Receive alerts for sell signals
+Indicator1_Enable = true
+Indicator1_Name = "Trend Filter H4"
+Indicator1_BuyBuffer = 0
+Indicator1_SellBuffer = 1
+Indicator1_Timing = 1  // Next candle (confirmed)
+Indicator1_Timeframe = 240  // H4
 
-Alert Settings:
-  • ShowArrowsOnChart: Display visual arrows on chart
-  • SendPopupAlert: Show MT4 popup window on signal
-  • SendEmailAlert: Send email (requires MT4 email setup)
-  • PlaySoundAlert: Play sound on signal
-  • AlertSoundFile: Which sound file to play
+Indicator2_Enable = true
+Indicator2_Name = "MACD Divergence"
+Indicator2_BuyBuffer = 0
+Indicator2_SellBuffer = 1
+Indicator2_Timing = 1  // Next candle
+Indicator2_Timeframe = 240  // H4
 
-Advanced Settings:
-  • MinBarsBetweenSignals: Minimum bars before same signal type
-  • AlertOnlyOnNewBar: Only alert when new bar forms (prevents repainting)
-  • EnableDebugMode: Show detailed logs in MT4 terminal
+Indicator3_Enable = true
+Indicator3_Name = "Support/Resistance D1"
+Indicator3_BuyBuffer = 0
+Indicator3_SellBuffer = 1
+Indicator3_Timing = 1  // Next candle
+Indicator3_Timeframe = 1440  // D1
 
-════════════════════════════════════════════════════════════════════
+ConfirmMode = 1  // All must confirm (maximum confidence)
+DuplicatePreventionBars = 15  // Avoid whipsaw
+EnableDebugMode = false
 
-CUSTOMIZATION TIPS:
-──────────────────────────────────────────────────────────────────
+========== PRESET 6: DAY TRADING - BALANCED ==========
 
-Adjusting Signal Frequency:
-  • More signals: Lower MA periods (e.g., 5/15)
-  • Fewer signals: Higher MA periods (e.g., 20/50)
-  • Very few signals: Use 50/200 (Golden Cross strategy)
+TelegramBotToken = "YOUR_TOKEN_HERE"
+TelegramChatID = "YOUR_CHAT_ID_HERE"
+EnableTelegramAlerts = true
 
-Adjusting Signal Quality:
-  • Better quality: Higher MinBarsBetweenSignals (5-10)
-  • More responsive: Lower MinBarsBetweenSignals (1-3)
-  • No repainting: AlertOnlyOnNewBar = true
+Indicator1_Enable = true
+Indicator1_Name = "MA 10/30 Cross"
+Indicator1_BuyBuffer = 0
+Indicator1_SellBuffer = 1
+Indicator1_Timing = 0
+Indicator1_Timeframe = 60  // H1
 
-Managing Alert Noise:
-  • Quiet mode: Disable popup and sound, keep Telegram only
-  • Important signals: Enable all alert types
-  • Testing: Enable debug mode, disable sound/popup
+Indicator2_Enable = true
+Indicator2_Name = "RSI 14"
+Indicator2_BuyBuffer = 0
+Indicator2_SellBuffer = 1
+Indicator2_Timing = 0
+Indicator2_Timeframe = 60  // H1
 
-Pair-Specific Settings:
-  • Major pairs (EURUSD, GBPUSD): Standard settings (10/30)
-  • Volatile pairs: Higher periods (20/50)
-  • Stable pairs: Lower periods (5/15)
+Indicator3_Enable = false
 
-════════════════════════════════════════════════════════════════════
+ConfirmMode = 1  // Both must confirm
+DuplicatePreventionBars = 5
+EnableDebugMode = false
 
-QUICK REFERENCE - MA PERIOD COMBINATIONS:
-──────────────────────────────────────────────────────────────────
+//+------------------------------------------------------------------+
+//|                     BUFFER NUMBER REFERENCE                       |
+//+------------------------------------------------------------------+
 
-Ultra-Fast (Scalping):      3/10, 5/10, 5/15
-Fast (Day Trading):         7/21, 10/20, 10/30
-Medium (Swing Trading):     15/45, 20/50, 25/75
-Slow (Position Trading):    50/100, 50/200, 100/200
+Most indicator buffers follow these patterns:
 
-Popular Combinations:
-  • 10/30 - Most balanced for day trading
-  • 5/15 - Aggressive scalping
-  • 20/50 - Conservative swing trading
-  • 50/200 - Golden Cross/Death Cross (long-term)
+STANDARD ARROW INDICATORS:
+Buffer 0 = Buy signal (up arrow)
+Buffer 1 = Sell signal (down arrow)
 
-════════════════════════════════════════════════════════════════════
+OSCILLATORS (RSI, STOCHASTIC, etc.):
+Buffer 0 = Main line
+Buffer 1 = Signal line (if applicable)
+Custom signal indicators may use different buffers - check code
 
-TIMEFRAME RECOMMENDATIONS:
-──────────────────────────────────────────────────────────────────
+MOVING AVERAGE CROSSOVERS:
+Buffer 0 = Fast MA
+Buffer 1 = Slow MA
+Buffer 2 = Buy signal (if indicator generates signals)
+Buffer 3 = Sell signal (if indicator generates signals)
 
-M1 (1 minute):    Best for: Testing, Ultra-scalping
-                  Settings: 3/10, 5/15
+CUSTOM INDICATORS:
+Always verify using Data Window (Ctrl+D) or check the indicator code
 
-M5 (5 minutes):   Best for: Scalping, Fast trading
-                  Settings: 5/15, 10/20
+TO FIND BUFFER NUMBERS:
+1. Add indicator to chart
+2. Press Ctrl+D to open Data Window
+3. Move cursor over a signal
+4. Check which buffer shows a value (not EMPTY_VALUE or 0)
+5. Buffer numbers are shown as "Indicator Name [0]", "[1]", etc.
 
-M15 (15 minutes): Best for: Short-term day trading
-                  Settings: 7/21, 10/30
+//+------------------------------------------------------------------+
+//|                     CONFIRMATION MODES GUIDE                      |
+//+------------------------------------------------------------------+
 
-M30 (30 minutes): Best for: Day trading
-                  Settings: 10/30, 15/45
+MODE 0 - SINGLE (Any 1 Indicator):
+✅ Use when: You want maximum sensitivity
+✅ Best for: Catching all possible signals
+⚠️ Warning: More signals = more false positives
+📊 Example: Any of the 3 indicators can trigger an alert
 
-H1 (1 hour):      Best for: Day trading, Swing trading
-                  Settings: 10/30, 20/50
+MODE 1 - ALL (All Indicators Required):
+✅ Use when: You want maximum confidence
+✅ Best for: Conservative trading, avoiding false signals
+⚠️ Warning: Fewer signals, may miss opportunities
+📊 Example: All 3 indicators must agree to trigger alert
 
-H4 (4 hours):     Best for: Swing trading
-                  Settings: 20/50, 25/75
+MODE 2 - MAJORITY (At Least 2):
+✅ Use when: You want balanced approach
+✅ Best for: 2-3 indicator setups
+⚠️ Warning: Requires at least 2 enabled indicators
+📊 Example: 2 out of 3 indicators must agree
 
-D1 (1 day):       Best for: Position trading
-                  Settings: 50/200, 20/50
+MODE 3 - ANY (Same as Single):
+✅ Use when: Same as MODE 0
+📊 Example: Alternative naming for clarity
 
-════════════════════════════════════════════════════════════════════
+//+------------------------------------------------------------------+
+//|                     TIMING MODES GUIDE                            |
+//+------------------------------------------------------------------+
 
-SUPPORT & DOCUMENTATION:
-──────────────────────────────────────────────────────────────────
+TIMING 0 - SAME CANDLE:
+✅ Immediate alerts as soon as signal appears
+⚠️ May trigger on incomplete candles (can repaint)
+📊 Best for: Real-time monitoring, when speed is critical
 
-Quick Start:      See QUICKSTART.md (5-minute setup guide)
-Full Guide:       See README.md (complete documentation)
-Examples:         See EXAMPLES.md (strategy configurations)
-Problems?         See TROUBLESHOOTING.md (detailed solutions)
+TIMING 1 - NEXT CANDLE:
+✅ Confirmed signals after candle closes
+✅ No repainting issues
+⚠️ Slight delay (waits for candle completion)
+📊 Best for: Conservative trading, avoiding false signals
 
-════════════════════════════════════════════════════════════════════
+//+------------------------------------------------------------------+
+//|                     TROUBLESHOOTING TIPS                          |
+//+------------------------------------------------------------------+
 
-SAFETY REMINDERS:
-──────────────────────────────────────────────────────────────────
+❌ NO SIGNALS DETECTED:
+1. Verify indicator is on the chart
+2. Check buffer numbers using Data Window (Ctrl+D)
+3. Enable EnableDebugMode = true
+4. Check MT4 Terminal (Ctrl+T) → Experts tab for logs
+5. Verify timeframe data is available
 
-⚠️ Always test on demo account first
-⚠️ Use proper risk management (stop loss, position sizing)
-⚠️ Never trade with money you can't afford to lose
-⚠️ Verify all signals manually before entering trades
-⚠️ Keep your bot token private and secure
-⚠️ Start with conservative settings and adjust gradually
+❌ WRONG SIGNALS:
+1. Buy and sell buffers might be swapped
+2. Test with EnableDebugMode = true
+3. Verify buffer numbers in Data Window
+4. Check if indicator uses EMPTY_VALUE or 0 for no signal
 
-════════════════════════════════════════════════════════════════════
+❌ TOO MANY DUPLICATE ALERTS:
+1. Increase DuplicatePreventionBars value
+2. Use "Next Candle" timing (1) instead of "Same Candle" (0)
+3. Change ConfirmMode to All or Majority
 
-Ready to start? Choose a preset above and copy into MT4!
+❌ TELEGRAM NOT WORKING:
+1. Verify TelegramBotToken (no spaces)
+2. Verify TelegramChatID (no spaces)
+3. Send a message to your bot first
+4. Check internet connection
+5. Enable EnableDebugMode = true for detailed logs
 
-Happy Trading! 🚀📊
+❌ BUFFER NUMBER ERRORS:
+1. MT4 supports buffers 0-7 only
+2. Check indicator code for SetIndexBuffer() calls
+3. Use Data Window to verify correct buffers
+4. Some indicators may not have signal buffers
+
+//+------------------------------------------------------------------+
+//|                     QUICK START CHECKLIST                         |
+//+------------------------------------------------------------------+
+
+☐ Created Telegram bot via @BotFather
+☐ Got Bot Token from BotFather
+☐ Got Chat ID from getUpdates URL
+☐ Installed indicator in MT4/MQL4/Indicators folder
+☐ Compiled indicator in MetaEditor (F7)
+☐ Added indicator(s) to monitor to chart
+☐ Found correct buffer numbers using Data Window
+☐ Configured Multi-Indicator Alert System
+☐ Entered Bot Token and Chat ID
+☐ Set indicator names, buffers, and timeframes
+☐ Chose confirmation mode
+☐ Enabled debug mode for testing
+☐ Tested with live signals
+☐ Verified Telegram alerts received
+☐ Disabled debug mode for production use
+
+//+------------------------------------------------------------------+
+//|                     SUPPORT & RESOURCES                           |
+//+------------------------------------------------------------------+
+
+📖 Full Documentation: README.md
+🔧 Troubleshooting Guide: TROUBLESHOOTING.md
+📝 Example Setups: EXAMPLES.md
+⚡ Quick Start: QUICKSTART.md
+✅ Setup Checklist: SETUP_CHECKLIST.md
+📜 Version History: CHANGELOG.md
+
+🔗 MQL4 Documentation: https://docs.mql4.com/
+🔗 Telegram Bot API: https://core.telegram.org/bots/api
+🔗 BotFather: https://t.me/BotFather
+
+//+------------------------------------------------------------------+
+//|                     END OF CONFIGURATION TEMPLATE                 |
+//+------------------------------------------------------------------+
