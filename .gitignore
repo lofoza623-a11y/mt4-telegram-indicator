@@ -1,0 +1,35 @@
+# MT4 Compiled Files
+*.ex4
+*.ex5
+
+# MT4 Generated Files
+*.log
+
+# MT4 Preset Files (may contain sensitive bot tokens)
+*.set
+
+# Backup Files
+*.bak
+*~
+*.tmp
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE Files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Personal Configuration
+config.local.mq4
+secrets.txt
+bot_token.txt
+
+# Test Files
+test/
+tests/
+*.test.mq4

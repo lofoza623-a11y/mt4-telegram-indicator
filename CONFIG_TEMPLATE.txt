@@ -1,0 +1,338 @@
+╔════════════════════════════════════════════════════════════════════╗
+║          MT4 TELEGRAM ALERT INDICATOR - CONFIGURATION TEMPLATE      ║
+╚════════════════════════════════════════════════════════════════════╝
+
+Instructions:
+1. Fill in your bot token and chat ID below
+2. Choose a configuration preset that matches your trading style
+3. Copy the settings into MT4 indicator settings dialog
+4. Adjust parameters as needed for your strategy
+
+════════════════════════════════════════════════════════════════════
+
+YOUR TELEGRAM CREDENTIALS:
+──────────────────────────────────────────────────────────────────
+
+TelegramBotToken = ""
+└─ Get from: @BotFather in Telegram
+└─ Format: 123456789:ABCdefGHIjklMNOpqrsTUVwxyz
+└─ Instructions: Send /newbot to @BotFather
+
+TelegramChatID = ""
+└─ Get from: https://api.telegram.org/bot<TOKEN>/getUpdates
+└─ Format: 123456789 (personal) or -123456789 (group)
+└─ Instructions: Send message to bot first, then check getUpdates
+
+════════════════════════════════════════════════════════════════════
+
+PRESET CONFIGURATIONS:
+Choose one of the following presets and copy to MT4
+
+════════════════════════════════════════════════════════════════════
+
+[PRESET 1] DAY TRADING - BALANCED (RECOMMENDED FOR BEGINNERS)
+──────────────────────────────────────────────────────────────────
+
+Timeframe: H1 or M30
+Expected Signals: 3-8 per day
+Risk Level: Medium
+
+========== Telegram Settings ==========
+TelegramBotToken = "YOUR_TOKEN_HERE"
+TelegramChatID = "YOUR_CHAT_ID_HERE"
+EnableTelegramAlerts = true
+MaxRetries = 3
+RetryDelayMS = 2000
+
+========== Signal Settings ==========
+FastMA_Period = 10
+SlowMA_Period = 30
+MA_Method = Simple (SMA)
+MA_Price = Close
+EnableBuySignals = true
+EnableSellSignals = true
+
+========== Alert Settings ==========
+ShowArrowsOnChart = true
+SendPopupAlert = true
+SendEmailAlert = false
+PlaySoundAlert = true
+AlertSoundFile = "alert.wav"
+
+========== Advanced Settings ==========
+MinBarsBetweenSignals = 5
+AlertOnlyOnNewBar = true
+EnableDebugMode = false
+
+════════════════════════════════════════════════════════════════════
+
+[PRESET 2] SCALPING - HIGH FREQUENCY
+──────────────────────────────────────────────────────────────────
+
+Timeframe: M5 or M1
+Expected Signals: 10-20 per day
+Risk Level: High
+
+========== Telegram Settings ==========
+TelegramBotToken = "YOUR_TOKEN_HERE"
+TelegramChatID = "YOUR_CHAT_ID_HERE"
+EnableTelegramAlerts = true
+MaxRetries = 3
+RetryDelayMS = 1000
+
+========== Signal Settings ==========
+FastMA_Period = 5
+SlowMA_Period = 15
+MA_Method = Exponential (EMA)
+MA_Price = Close
+EnableBuySignals = true
+EnableSellSignals = true
+
+========== Alert Settings ==========
+ShowArrowsOnChart = true
+SendPopupAlert = false
+SendEmailAlert = false
+PlaySoundAlert = true
+AlertSoundFile = "alert.wav"
+
+========== Advanced Settings ==========
+MinBarsBetweenSignals = 2
+AlertOnlyOnNewBar = true
+EnableDebugMode = false
+
+════════════════════════════════════════════════════════════════════
+
+[PRESET 3] SWING TRADING - LONG TERM
+──────────────────────────────────────────────────────────────────
+
+Timeframe: H4 or D1
+Expected Signals: 1-3 per week
+Risk Level: Low
+
+========== Telegram Settings ==========
+TelegramBotToken = "YOUR_TOKEN_HERE"
+TelegramChatID = "YOUR_CHAT_ID_HERE"
+EnableTelegramAlerts = true
+MaxRetries = 3
+RetryDelayMS = 2000
+
+========== Signal Settings ==========
+FastMA_Period = 20
+SlowMA_Period = 50
+MA_Method = Simple (SMA)
+MA_Price = Close
+EnableBuySignals = true
+EnableSellSignals = true
+
+========== Alert Settings ==========
+ShowArrowsOnChart = true
+SendPopupAlert = true
+SendEmailAlert = true
+PlaySoundAlert = true
+AlertSoundFile = "alert2.wav"
+
+========== Advanced Settings ==========
+MinBarsBetweenSignals = 10
+AlertOnlyOnNewBar = true
+EnableDebugMode = false
+
+════════════════════════════════════════════════════════════════════
+
+[PRESET 4] CONSERVATIVE - GOLDEN CROSS/DEATH CROSS
+──────────────────────────────────────────────────────────────────
+
+Timeframe: H4 or D1
+Expected Signals: 1-2 per month
+Risk Level: Very Low
+
+========== Telegram Settings ==========
+TelegramBotToken = "YOUR_TOKEN_HERE"
+TelegramChatID = "YOUR_CHAT_ID_HERE"
+EnableTelegramAlerts = true
+MaxRetries = 3
+RetryDelayMS = 2000
+
+========== Signal Settings ==========
+FastMA_Period = 50
+SlowMA_Period = 200
+MA_Method = Exponential (EMA)
+MA_Price = Close
+EnableBuySignals = true
+EnableSellSignals = true
+
+========== Alert Settings ==========
+ShowArrowsOnChart = true
+SendPopupAlert = true
+SendEmailAlert = true
+PlaySoundAlert = true
+AlertSoundFile = "alert.wav"
+
+========== Advanced Settings ==========
+MinBarsBetweenSignals = 20
+AlertOnlyOnNewBar = true
+EnableDebugMode = false
+
+════════════════════════════════════════════════════════════════════
+
+[PRESET 5] TESTING - QUICK SIGNAL GENERATION
+──────────────────────────────────────────────────────────────────
+
+Timeframe: M1
+Expected Signals: Many (for testing only)
+Risk Level: N/A (Testing only)
+
+⚠️ USE ONLY FOR TESTING TELEGRAM CONNECTION ⚠️
+
+========== Telegram Settings ==========
+TelegramBotToken = "YOUR_TOKEN_HERE"
+TelegramChatID = "YOUR_CHAT_ID_HERE"
+EnableTelegramAlerts = true
+MaxRetries = 3
+RetryDelayMS = 1000
+
+========== Signal Settings ==========
+FastMA_Period = 3
+SlowMA_Period = 5
+MA_Method = Simple (SMA)
+MA_Price = Close
+EnableBuySignals = true
+EnableSellSignals = true
+
+========== Alert Settings ==========
+ShowArrowsOnChart = true
+SendPopupAlert = false
+SendEmailAlert = false
+PlaySoundAlert = false
+AlertSoundFile = "alert.wav"
+
+========== Advanced Settings ==========
+MinBarsBetweenSignals = 1
+AlertOnlyOnNewBar = false
+EnableDebugMode = true
+
+════════════════════════════════════════════════════════════════════
+
+PARAMETER EXPLANATION:
+──────────────────────────────────────────────────────────────────
+
+Telegram Settings:
+  • TelegramBotToken: Your unique bot token from @BotFather
+  • TelegramChatID: Your chat ID (personal or group)
+  • EnableTelegramAlerts: Turn Telegram alerts on/off
+  • MaxRetries: How many times to retry if API call fails
+  • RetryDelayMS: Milliseconds to wait between retries
+
+Signal Settings:
+  • FastMA_Period: Period for fast moving average (lower = more sensitive)
+  • SlowMA_Period: Period for slow moving average (higher = less sensitive)
+  • MA_Method: Calculation method (Simple, Exponential, etc.)
+  • MA_Price: Which price to use (Close, Open, High, Low, etc.)
+  • EnableBuySignals: Receive alerts for buy signals
+  • EnableSellSignals: Receive alerts for sell signals
+
+Alert Settings:
+  • ShowArrowsOnChart: Display visual arrows on chart
+  • SendPopupAlert: Show MT4 popup window on signal
+  • SendEmailAlert: Send email (requires MT4 email setup)
+  • PlaySoundAlert: Play sound on signal
+  • AlertSoundFile: Which sound file to play
+
+Advanced Settings:
+  • MinBarsBetweenSignals: Minimum bars before same signal type
+  • AlertOnlyOnNewBar: Only alert when new bar forms (prevents repainting)
+  • EnableDebugMode: Show detailed logs in MT4 terminal
+
+════════════════════════════════════════════════════════════════════
+
+CUSTOMIZATION TIPS:
+──────────────────────────────────────────────────────────────────
+
+Adjusting Signal Frequency:
+  • More signals: Lower MA periods (e.g., 5/15)
+  • Fewer signals: Higher MA periods (e.g., 20/50)
+  • Very few signals: Use 50/200 (Golden Cross strategy)
+
+Adjusting Signal Quality:
+  • Better quality: Higher MinBarsBetweenSignals (5-10)
+  • More responsive: Lower MinBarsBetweenSignals (1-3)
+  • No repainting: AlertOnlyOnNewBar = true
+
+Managing Alert Noise:
+  • Quiet mode: Disable popup and sound, keep Telegram only
+  • Important signals: Enable all alert types
+  • Testing: Enable debug mode, disable sound/popup
+
+Pair-Specific Settings:
+  • Major pairs (EURUSD, GBPUSD): Standard settings (10/30)
+  • Volatile pairs: Higher periods (20/50)
+  • Stable pairs: Lower periods (5/15)
+
+════════════════════════════════════════════════════════════════════
+
+QUICK REFERENCE - MA PERIOD COMBINATIONS:
+──────────────────────────────────────────────────────────────────
+
+Ultra-Fast (Scalping):      3/10, 5/10, 5/15
+Fast (Day Trading):         7/21, 10/20, 10/30
+Medium (Swing Trading):     15/45, 20/50, 25/75
+Slow (Position Trading):    50/100, 50/200, 100/200
+
+Popular Combinations:
+  • 10/30 - Most balanced for day trading
+  • 5/15 - Aggressive scalping
+  • 20/50 - Conservative swing trading
+  • 50/200 - Golden Cross/Death Cross (long-term)
+
+════════════════════════════════════════════════════════════════════
+
+TIMEFRAME RECOMMENDATIONS:
+──────────────────────────────────────────────────────────────────
+
+M1 (1 minute):    Best for: Testing, Ultra-scalping
+                  Settings: 3/10, 5/15
+
+M5 (5 minutes):   Best for: Scalping, Fast trading
+                  Settings: 5/15, 10/20
+
+M15 (15 minutes): Best for: Short-term day trading
+                  Settings: 7/21, 10/30
+
+M30 (30 minutes): Best for: Day trading
+                  Settings: 10/30, 15/45
+
+H1 (1 hour):      Best for: Day trading, Swing trading
+                  Settings: 10/30, 20/50
+
+H4 (4 hours):     Best for: Swing trading
+                  Settings: 20/50, 25/75
+
+D1 (1 day):       Best for: Position trading
+                  Settings: 50/200, 20/50
+
+════════════════════════════════════════════════════════════════════
+
+SUPPORT & DOCUMENTATION:
+──────────────────────────────────────────────────────────────────
+
+Quick Start:      See QUICKSTART.md (5-minute setup guide)
+Full Guide:       See README.md (complete documentation)
+Examples:         See EXAMPLES.md (strategy configurations)
+Problems?         See TROUBLESHOOTING.md (detailed solutions)
+
+════════════════════════════════════════════════════════════════════
+
+SAFETY REMINDERS:
+──────────────────────────────────────────────────────────────────
+
+⚠️ Always test on demo account first
+⚠️ Use proper risk management (stop loss, position sizing)
+⚠️ Never trade with money you can't afford to lose
+⚠️ Verify all signals manually before entering trades
+⚠️ Keep your bot token private and secure
+⚠️ Start with conservative settings and adjust gradually
+
+════════════════════════════════════════════════════════════════════
+
+Ready to start? Choose a preset above and copy into MT4!
+
+Happy Trading! 🚀📊
