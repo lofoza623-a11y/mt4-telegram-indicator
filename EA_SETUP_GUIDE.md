@@ -223,6 +223,31 @@ To use a different timeframe than the chart:
 - **ENTRY_SAME_CANDLE**: Signal triggers on current candle (most common)
 - **ENTRY_NEXT_CANDLE**: Signal triggers on next candle open (for confirmation)
 
+### Performance Tracking
+
+The EA includes built-in performance tracking to analyze indicator effectiveness:
+
+1. **Enable Performance Tracking**:
+   ```
+   EnablePerformanceTracking = true
+   PerformanceTrackingBars = 20  // Bars to hold trade for evaluation
+   TakeProfitPips = 50.0         // Take profit level in pips
+   StopLossPips = 30.0           // Stop loss level in pips
+   ```
+
+2. **How it works**:
+   - Tracks each signal and simulates holding for `PerformanceTrackingBars`
+   - Calculates win/loss based on take profit and stop loss levels
+   - Updates statistics (win rate, profit factor, total profit/loss)
+   - Sends detailed performance reports via Telegram
+
+3. **Performance metrics include**:
+   - Win rate and profit factor
+   - Total profit/loss statistics
+   - Average win/loss per trade
+   - Risk/reward analysis
+   - Periodic performance reports
+
 ### Multiple Alert Methods
 
 - **Telegram**: Primary alert method (recommended)

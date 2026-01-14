@@ -43,12 +43,31 @@ input string    AlertSoundFile = "alert.wav";             // Alert Sound File
 input string    Section4 = "========== Advanced Settings ==========";
 input int       DuplicatePreventionBars = 5;              // Bars to prevent duplicate alerts
 input bool      EnableDebugMode = false;                  // Enable Debug Logging
+input bool      EnablePerformanceTracking = true;         // Track win/loss performance
+input int       PerformanceTrackingBars = 20;             // Bars to hold trade for result
+input double    TakeProfitPips = 50.0;                    // Take profit level in pips
+input double    StopLossPips = 30.0;                      // Stop loss level in pips
 
 //--- Global Variables
 int lastBuyAlertBar = -1;
 int lastSellAlertBar = -1;
 datetime lastBuyAlertTime = 0;
 datetime lastSellAlertTime = 0;
+
+//--- Performance Tracking Variables
+int totalTrades = 0;
+int winningTrades = 0;
+int losingTrades = 0;
+double totalProfit = 0.0;
+double totalLoss = 0.0;
+
+//--- Active Trade Tracking
+datetime lastBuySignalTime = 0;
+datetime lastSellSignalTime = 0;
+double lastBuySignalPrice = 0.0;
+double lastSellSignalPrice = 0.0;
+bool buyTradeActive = false;
+bool sellTradeActive = false;
 
 //--- Import Windows API for HTTP requests
 #import "wininet.dll"
@@ -142,6 +161,15 @@ void OnTick()
           SendAlert("BUY", Bid, currentTime);
           lastBuyAlertTime = currentTime;
           lastBuyAlertBar = Bars;
+          
+          //--- Start performance tracking for buy signal
+          if(EnablePerformanceTracking)
+          {
+             lastBuySignalTime = currentTime;
+             lastBuySignalPrice = Bid;
+             buyTradeActive = true;
+             sellTradeActive = false; // Close any active sell trade
+          }
       }
    }
 
@@ -153,7 +181,23 @@ void OnTick()
           SendAlert("SELL", Ask, currentTime);
           lastSellAlertTime = currentTime;
           lastSellAlertBar = Bars;
+          
+          //--- Start performance tracking for sell signal
+          if(EnablePerformanceTracking)
+          {
+             lastSellSignalTime = currentTime;
+             lastSellSignalPrice = Ask;
+             sellTradeActive = true;
+             buyTradeActive = false; // Close any active buy trade
+          }
       }
+   }
+   
+   //--- Check performance of active trades
+   if(EnablePerformanceTracking)
+   {
+      CheckTradePerformance();
+      CheckPeriodicPerformanceReport();
    }
 }
 
@@ -280,12 +324,315 @@ void SendAlert(string signalType, double price, datetime signalTime)
                                          signalType, symbol, timeframe);
       SendMail(emailSubject, alertMessage);
    }
-}
+   }
 
-//+------------------------------------------------------------------+
-//| Send Telegram Message Function                                   |
-//+------------------------------------------------------------------+
-bool SendTelegramMessage(string message)
+   //+------------------------------------------------------------------+
+   //| Check Trade Performance Function                                 |
+   //+------------------------------------------------------------------+
+   void CheckTradePerformance()
+   {
+   //--- Calculate pips to points conversion
+   double pipValue = Point;
+   if(Digits == 3 || Digits == 5) // JPY pairs and some others
+     pipValue = Point * 10;
+
+   //--- Check buy trade performance
+   if(buyTradeActive && lastBuySignalTime > 0)
+   {
+     //--- Calculate bars since signal
+     int barsSinceSignal = Bars - iBarShift(NULL, 0, lastBuySignalTime);
+
+     //--- Check if trade should be closed (after PerformanceTrackingBars)
+     if(barsSinceSignal >= PerformanceTrackingBars)
+     {
+        double currentPrice = Bid;
+        double entryPrice = lastBuySignalPrice;
+        double resultPips = (currentPrice - entryPrice) / pipValue;
+
+        //--- Determine win/loss based on take profit and stop loss
+        bool isWinner = false;
+        double tradeResult = 0.0;
+
+        //--- Check if hit take profit
+        if(resultPips >= TakeProfitPips)
+        {
+           isWinner = true;
+           tradeResult = TakeProfitPips;
+        }
+        //--- Check if hit stop loss
+        else if(resultPips <= -StopLossPips)
+        {
+           isWinner = false;
+           tradeResult = -StopLossPips;
+        }
+        //--- If neither, use actual result
+        else
+        {
+           isWinner = resultPips > 0;
+           tradeResult = resultPips;
+        }
+
+        //--- Update statistics
+        totalTrades++;
+        if(isWinner)
+        {
+           winningTrades++;
+           totalProfit += tradeResult;
+        }
+        else
+        {
+           losingTrades++;
+           totalLoss += MathAbs(tradeResult);
+        }
+
+        //--- Send performance summary
+        SendPerformanceSummary("BUY", entryPrice, currentPrice, resultPips, isWinner, tradeResult);
+
+        //--- Reset trade tracking
+        buyTradeActive = false;
+        lastBuySignalTime = 0;
+        lastBuySignalPrice = 0.0;
+     }
+   }
+
+   //--- Check sell trade performance
+   if(sellTradeActive && lastSellSignalTime > 0)
+   {
+     //--- Calculate bars since signal
+     int barsSinceSignal = Bars - iBarShift(NULL, 0, lastSellSignalTime);
+
+     //--- Check if trade should be closed (after PerformanceTrackingBars)
+     if(barsSinceSignal >= PerformanceTrackingBars)
+     {
+        double currentPrice = Ask;
+        double entryPrice = lastSellSignalPrice;
+        double resultPips = (entryPrice - currentPrice) / pipValue;
+
+        //--- Determine win/loss based on take profit and stop loss
+        bool isWinner = false;
+        double tradeResult = 0.0;
+
+        //--- Check if hit take profit
+        if(resultPips >= TakeProfitPips)
+        {
+           isWinner = true;
+           tradeResult = TakeProfitPips;
+        }
+        //--- Check if hit stop loss
+        else if(resultPips <= -StopLossPips)
+        {
+           isWinner = false;
+           tradeResult = -StopLossPips;
+        }
+        //--- If neither, use actual result
+        else
+        {
+           isWinner = resultPips > 0;
+           tradeResult = resultPips;
+        }
+
+        //--- Update statistics
+        totalTrades++;
+        if(isWinner)
+        {
+           winningTrades++;
+           totalProfit += tradeResult;
+        }
+        else
+        {
+           losingTrades++;
+           totalLoss += MathAbs(tradeResult);
+        }
+
+        //--- Send performance summary
+        SendPerformanceSummary("SELL", entryPrice, currentPrice, resultPips, isWinner, tradeResult);
+
+        //--- Reset trade tracking
+        sellTradeActive = false;
+        lastSellSignalTime = 0;
+        lastSellSignalPrice = 0.0;
+     }
+   }
+   }
+
+   //+------------------------------------------------------------------+
+   //| Send Performance Summary Function                                |
+   //+------------------------------------------------------------------+
+   void SendPerformanceSummary(string signalType, double entryPrice, double exitPrice,
+                          double resultPips, bool isWinner, double tradeResult)
+   {
+   //--- Calculate performance statistics
+   double winRate = 0.0;
+   double profitFactor = 0.0;
+   if(totalTrades > 0)
+   {
+     winRate = (winningTrades * 100.0) / totalTrades;
+     if(totalLoss > 0)
+        profitFactor = totalProfit / totalLoss;
+     else
+        profitFactor = totalProfit;
+   }
+
+   //--- Format performance message
+   string symbol = Symbol();
+   string timeframe = GetTimeframeString(Period());
+   string entryPriceStr = DoubleToString(entryPrice, Digits);
+   string exitPriceStr = DoubleToString(exitPrice, Digits);
+   string resultStr = DoubleToString(resultPips, 1);
+   string tradeResultStr = DoubleToString(tradeResult, 1);
+
+   string performanceMessage = StringFormat(
+     "📊 TRADE PERFORMANCE SUMMARY 📊\n\n" +
+     "🎯 Signal: %s\n" +
+     "💱 Pair: %s\n" +
+     "⏱️ Timeframe: %s\n" +
+     "💰 Entry: %s\n" +
+     "💰 Exit: %s\n" +
+     "📈 Result: %s pips\n" +
+     "🏆 Status: %s\n\n" +
+     "📊 OVERALL STATISTICS:\n" +
+     "🔢 Total Trades: %d\n" +
+     "🟢 Winning Trades: %d (%.1f%%)\n" +
+     "🔴 Losing Trades: %d (%.1f%%)\n" +
+     "💰 Total Profit: %.1f pips\n" +
+     "💰 Total Loss: %.1f pips\n" +
+     "📈 Profit Factor: %.2f\n" +
+     "🎯 Win Rate: %.1f%%",
+     signalType, symbol, timeframe, entryPriceStr, exitPriceStr, resultStr,
+     isWinner ? "🟢 WINNER" : "🔴 LOSER",
+     totalTrades, winningTrades, winRate, losingTrades, (100.0 - winRate),
+     totalProfit, totalLoss, profitFactor, winRate
+   );
+
+   //--- Send performance alert
+   if(EnableTelegramAlerts && TelegramBotToken != "" && TelegramChatID != "")
+   {
+     bool telegramSent = SendTelegramMessage(performanceMessage);
+     if(EnableDebugMode)
+        Print("Performance summary sent: ", telegramSent);
+   }
+
+   //--- Send MT4 Popup Alert
+   if(SendPopupAlert)
+   {
+     Alert(StringFormat("Performance: %s | Result: %s pips | Win: %d | Loss: %d",
+           signalType, resultStr, winningTrades, losingTrades));
+   }
+
+   if(EnableDebugMode)
+   {
+     Print("Performance Summary:");
+     Print(StringFormat("  Signal: %s, Result: %.1f pips, Status: %s",
+           signalType, resultPips, isWinner ? "WINNER" : "LOSER"));
+     Print(StringFormat("  Total: %d trades, %d wins (%.1f%%), PF: %.2f",
+           totalTrades, winningTrades, winRate, profitFactor));
+   }
+   }
+
+   //+------------------------------------------------------------------+
+   //| Check Periodic Performance Report Function                       |
+   //+------------------------------------------------------------------+
+   void CheckPeriodicPerformanceReport()
+   {
+   //--- Send periodic report every 24 hours or when we have significant data
+   static datetime lastReportTime = 0;
+
+   if(lastReportTime == 0)
+   {
+      lastReportTime = TimeCurrent();
+      return; // Skip first call
+   }
+
+   //--- Check if 24 hours have passed or we have at least 5 trades
+   bool sendReport = false;
+   if((TimeCurrent() - lastReportTime) >= 86400) // 24 hours in seconds
+   {
+      sendReport = true;
+   }
+   else if(totalTrades >= 5 && (totalTrades % 5 == 0))
+   {
+      sendReport = true; // Send report every 5 trades
+   }
+
+   if(sendReport && totalTrades > 0)
+   {
+      //--- Calculate statistics
+      double winRate = 0.0;
+      double profitFactor = 0.0;
+      double avgWin = 0.0;
+      double avgLoss = 0.0;
+
+      if(totalTrades > 0)
+      {
+         winRate = (winningTrades * 100.0) / totalTrades;
+         if(losingTrades > 0)
+            avgLoss = totalLoss / losingTrades;
+         if(winningTrades > 0)
+            avgWin = totalProfit / winningTrades;
+         if(totalLoss > 0)
+            profitFactor = totalProfit / totalLoss;
+         else
+            profitFactor = totalProfit;
+      }
+
+      //--- Format periodic report
+      string symbol = Symbol();
+      string timeframe = GetTimeframeString(Period());
+      string reportMessage = StringFormat(
+         "📈 PERIODIC PERFORMANCE REPORT 📈\n\n" +
+         "📊 Indicator: %s\n" +
+         "💱 Pair: %s\n" +
+         "⏱️ Timeframe: %s\n\n" +
+         "📊 TRADE STATISTICS:\n" +
+         "🔢 Total Trades: %d\n" +
+         "🟢 Winning Trades: %d (%.1f%%)\n" +
+         "🔴 Losing Trades: %d (%.1f%%)\n" +
+         "📊 Win Rate: %.1f%%\n" +
+         "💰 Total Profit: %.1f pips\n" +
+         "💰 Total Loss: %.1f pips\n" +
+         "📈 Net Result: %.1f pips\n" +
+         "📊 Profit Factor: %.2f\n" +
+         "💰 Avg Win: %.1f pips\n" +
+         "💰 Avg Loss: %.1f pips\n" +
+         "📊 Expectancy: %.2f pips/trade\n\n" +
+         "🎯 PERFORMANCE METRICS:\n" +
+         "📈 Risk/Reward Ratio: %.2f\n" +
+         "🎯 Success Rate: %.1f%%\n" +
+         "📊 Consistency Score: %.1f%%",
+         IndicatorName, symbol, timeframe,
+         totalTrades, winningTrades, winRate, losingTrades, (100.0 - winRate),
+         winRate, totalProfit, totalLoss, (totalProfit - totalLoss),
+         profitFactor, avgWin, avgLoss, ((totalProfit - totalLoss) / totalTrades),
+         (TakeProfitPips / StopLossPips), winRate,
+         (winningTrades > 0 ? (winningTrades * 100.0) / totalTrades : 0.0)
+      );
+
+      //--- Send the report
+      if(EnableTelegramAlerts && TelegramBotToken != "" && TelegramChatID != "")
+      {
+         bool telegramSent = SendTelegramMessage(reportMessage);
+         if(EnableDebugMode)
+            Print("Periodic performance report sent: ", telegramSent);
+      }
+
+      //--- Update last report time
+      lastReportTime = TimeCurrent();
+
+      if(EnableDebugMode)
+      {
+         Print("Periodic Performance Report Sent:");
+         Print(StringFormat("  Total Trades: %d, Wins: %d, Losses: %d, Win Rate: %.1f%%",
+               totalTrades, winningTrades, losingTrades, winRate));
+         Print(StringFormat("  Net Result: %.1f pips, Profit Factor: %.2f",
+               (totalProfit - totalLoss), profitFactor));
+      }
+   }
+   }
+
+   //+------------------------------------------------------------------+
+   //| Send Telegram Message Function                                   |
+   //+------------------------------------------------------------------+
+   bool SendTelegramMessage(string message)
 {
    //--- URL encode the message
    string encodedMessage = UrlEncode(message);

@@ -148,6 +148,10 @@ AlertSoundFile = "alert.wav"
 ========== Advanced Settings ==========
 DuplicatePreventionBars = 3  // Less prevention for more alerts
 EnableDebugMode = false
+EnablePerformanceTracking = true  // Track performance
+PerformanceTrackingBars = 20  // Standard holding period
+TakeProfitPips = 50.0  // Aggressive take profit
+StopLossPips = 30.0  // Tight stop loss
 
 =================================================================
 TEMPLATE 6: Custom Buffer Configuration
@@ -177,6 +181,43 @@ AlertSoundFile = "alert.wav"
 ========== Advanced Settings ==========
 DuplicatePreventionBars = 5
 EnableDebugMode = false
+EnablePerformanceTracking = true
+PerformanceTrackingBars = 20
+TakeProfitPips = 50.0
+StopLossPips = 30.0
+
+=================================================================
+TEMPLATE 7: Performance Optimization Setup
+=================================================================
+
+========== Telegram Settings ==========
+TelegramBotToken = "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+TelegramChatID = "-123456789"
+EnableTelegramAlerts = true
+MaxRetries = 3
+RetryDelayMS = 2000
+
+========== Indicator Settings ==========
+IndicatorName = "MyPriceAction.ex4"
+BuyBufferNumber = 0
+SellBufferNumber = 1
+SignalTiming = ENTRY_SAME_CANDLE
+UseCurrentTimeframe = true
+CustomTimeframe = PERIOD_H1
+
+========== Alert Settings ==========
+SendPopupAlert = true
+SendEmailAlert = false
+PlaySoundAlert = true
+AlertSoundFile = "alert.wav"
+
+========== Advanced Settings ==========
+DuplicatePreventionBars = 5
+EnableDebugMode = false
+EnablePerformanceTracking = true
+PerformanceTrackingBars = 20
+TakeProfitPips = 50.0
+StopLossPips = 30.0
 
 =================================================================
 HOW TO USE THESE TEMPLATES

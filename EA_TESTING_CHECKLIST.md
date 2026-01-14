@@ -114,9 +114,20 @@ Use this checklist to verify your EA is working correctly before live trading.
 - [ ] Verify email is sent (if configured)
 - [ ] Verify Telegram message is received
 
+### Step 13: Test Performance Tracking
+- [ ] Set `EnablePerformanceTracking = true`
+- [ ] Set `PerformanceTrackingBars = 5` (short period for testing)
+- [ ] Set `TakeProfitPips = 50.0`
+- [ ] Set `StopLossPips = 30.0`
+- [ ] Trigger a signal and wait for PerformanceTrackingBars to elapse
+- [ ] Verify performance summary is sent to Telegram
+- [ ] Check that statistics are updated correctly
+- [ ] Verify win/loss determination is accurate
+- [ ] Test multiple trades to see cumulative statistics
+
 ## 🐞 Error Handling Test
 
-### Step 13: Test Error Conditions
+### Step 14: Test Error Conditions
 - [ ] Set `IndicatorName` to wrong filename
 - [ ] Verify error message in Experts tab
 - [ ] Set `BuyBufferNumber` to invalid value (e.g., 8)
@@ -126,7 +137,7 @@ Use this checklist to verify your EA is working correctly before live trading.
 - [ ] Set `TelegramChatID` to empty
 - [ ] Verify warning message
 
-### Step 14: Test Network Issues
+### Step 15: Test Network Issues
 - [ ] Disable internet connection
 - [ ] Trigger a signal
 - [ ] Verify retry logic works (check Experts tab)
@@ -135,14 +146,14 @@ Use this checklist to verify your EA is working correctly before live trading.
 
 ## 📊 Performance Test
 
-### Step 15: Stress Test
+### Step 16: Stress Test
 - [ ] Attach EA to multiple charts
 - [ ] Use different symbols (EURUSD, GBPUSD, etc.)
 - [ ] Monitor CPU usage in Task Manager
 - [ ] Verify no performance degradation
 - [ ] Verify all charts receive alerts correctly
 
-### Step 16: Long-Running Test
+### Step 17: Long-Running Test
 - [ ] Let EA run for 24 hours
 - [ ] Monitor Experts tab for errors
 - [ ] Verify no memory leaks
@@ -150,14 +161,14 @@ Use this checklist to verify your EA is working correctly before live trading.
 
 ## 🎓 User Acceptance Test
 
-### Step 17: Real Trading Conditions
+### Step 18: Real Trading Conditions
 - [ ] Use demo account with real market data
 - [ ] Monitor signals during active market hours
 - [ ] Verify signals match your indicator's visual signals
 - [ ] Verify alert timing is appropriate
 - [ ] Verify no false positives or missed signals
 
-### Step 18: Compare with Manual Trading
+### Step 19: Compare with Manual Trading
 - [ ] Manually identify signals on chart
 - [ ] Verify EA detects same signals
 - [ ] Verify alert timing matches your expectations
@@ -165,14 +176,14 @@ Use this checklist to verify your EA is working correctly before live trading.
 
 ## ✅ Final Verification
 
-### Step 19: Production Configuration
+### Step 20: Production Configuration
 - [ ] Set `EnableDebugMode = false`
 - [ ] Set `DuplicatePreventionBars = 5` (recommended)
 - [ ] Set `MaxRetries = 3` (recommended)
 - [ ] Set `RetryDelayMS = 2000` (recommended)
 - [ ] Enable only desired alert methods
 
-### Step 20: Final Test
+### Step 21: Final Test
 - [ ] Trigger one final signal
 - [ ] Verify all systems work correctly
 - [ ] Verify no debug messages appear
@@ -186,6 +197,7 @@ Use this checklist to verify your EA is working correctly before live trading.
 - [ ] Signal detection working (debug mode)
 - [ ] Popup alerts working
 - [ ] Telegram alerts working
+- [ ] Performance tracking working
 
 ### Configuration
 - [ ] Correct indicator name
@@ -193,12 +205,14 @@ Use this checklist to verify your EA is working correctly before live trading.
 - [ ] Correct signal timing
 - [ ] Correct timeframe settings
 - [ ] Appropriate duplicate prevention
+- [ ] Performance tracking parameters set
 
 ### Alert Methods
 - [ ] Telegram alerts functional
 - [ ] Popup alerts functional
 - [ ] Sound alerts functional (if enabled)
 - [ ] Email alerts functional (if enabled)
+- [ ] Performance reports functional
 
 ### Error Handling
 - [ ] Invalid configuration detected

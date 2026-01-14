@@ -40,7 +40,14 @@ Copy YourIndicator.ex4 → MT4\MQL4\Indicators\
 2. Check MT4 Experts tab for debug messages
 3. Verify Telegram alert arrives
 4. Set `EnableDebugMode = false`
-5. Enjoy automated alerts!
+5. Enable performance tracking (optional):
+   ```
+   EnablePerformanceTracking = true
+   PerformanceTrackingBars = 20
+   TakeProfitPips = 50.0
+   StopLossPips = 30.0
+   ```
+6. Enjoy automated alerts and performance reports!
 
 ## 📊 Configuration Cheat Sheet
 
