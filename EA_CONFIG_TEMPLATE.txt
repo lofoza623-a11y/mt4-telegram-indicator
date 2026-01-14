@@ -1,0 +1,251 @@
+=================================================================
+EA-Based Telegram Alert System - Configuration Template
+=================================================================
+
+Use these templates to quickly configure your EA for different scenarios.
+
+=================================================================
+TEMPLATE 1: Basic Setup (Most Common)
+=================================================================
+
+========== Telegram Settings ==========
+TelegramBotToken = "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+TelegramChatID = "-123456789"
+EnableTelegramAlerts = true
+MaxRetries = 3
+RetryDelayMS = 2000
+
+========== Indicator Settings ==========
+IndicatorName = "MyPriceAction.ex4"
+BuyBufferNumber = 0
+SellBufferNumber = 1
+SignalTiming = ENTRY_SAME_CANDLE
+UseCurrentTimeframe = true
+CustomTimeframe = PERIOD_H1
+
+========== Alert Settings ==========
+SendPopupAlert = true
+SendEmailAlert = false
+PlaySoundAlert = true
+AlertSoundFile = "alert.wav"
+
+========== Advanced Settings ==========
+DuplicatePreventionBars = 5
+EnableDebugMode = false
+
+=================================================================
+TEMPLATE 2: Testing Configuration (Debug Mode)
+=================================================================
+
+========== Telegram Settings ==========
+TelegramBotToken = "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+TelegramChatID = "-123456789"
+EnableTelegramAlerts = false  // Disable Telegram during testing
+MaxRetries = 3
+RetryDelayMS = 2000
+
+========== Indicator Settings ==========
+IndicatorName = "MyPriceAction.ex4"
+BuyBufferNumber = 0
+SellBufferNumber = 1
+SignalTiming = ENTRY_SAME_CANDLE
+UseCurrentTimeframe = true
+CustomTimeframe = PERIOD_H1
+
+========== Alert Settings ==========
+SendPopupAlert = true  // Enable popup for testing
+SendEmailAlert = false
+PlaySoundAlert = true
+AlertSoundFile = "alert.wav"
+
+========== Advanced Settings ==========
+DuplicatePreventionBars = 1  // Minimal prevention for testing
+EnableDebugMode = true  // Enable detailed logging
+
+=================================================================
+TEMPLATE 3: Multi-Timeframe Setup
+=================================================================
+
+========== Telegram Settings ==========
+TelegramBotToken = "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+TelegramChatID = "-123456789"
+EnableTelegramAlerts = true
+MaxRetries = 3
+RetryDelayMS = 2000
+
+========== Indicator Settings ==========
+IndicatorName = "MyPriceAction.ex4"
+BuyBufferNumber = 0
+SellBufferNumber = 1
+SignalTiming = ENTRY_SAME_CANDLE
+UseCurrentTimeframe = false  // Use custom timeframe
+CustomTimeframe = PERIOD_H4  // Monitor H4 signals on M15 chart
+
+========== Alert Settings ==========
+SendPopupAlert = true
+SendEmailAlert = false
+PlaySoundAlert = true
+AlertSoundFile = "alert.wav"
+
+========== Advanced Settings ==========
+DuplicatePreventionBars = 10  // More prevention for higher timeframes
+EnableDebugMode = false
+
+=================================================================
+TEMPLATE 4: Conservative Setup (Next Candle Entry)
+=================================================================
+
+========== Telegram Settings ==========
+TelegramBotToken = "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+TelegramChatID = "-123456789"
+EnableTelegramAlerts = true
+MaxRetries = 3
+RetryDelayMS = 2000
+
+========== Indicator Settings ==========
+IndicatorName = "MyPriceAction.ex4"
+BuyBufferNumber = 0
+SellBufferNumber = 1
+SignalTiming = ENTRY_NEXT_CANDLE  // Wait for next candle confirmation
+UseCurrentTimeframe = true
+CustomTimeframe = PERIOD_H1
+
+========== Alert Settings ==========
+SendPopupAlert = true
+SendEmailAlert = false
+PlaySoundAlert = true
+AlertSoundFile = "alert.wav"
+
+========== Advanced Settings ==========
+DuplicatePreventionBars = 5
+EnableDebugMode = false
+
+=================================================================
+TEMPLATE 5: Aggressive Setup (All Alerts Enabled)
+=================================================================
+
+========== Telegram Settings ==========
+TelegramBotToken = "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+TelegramChatID = "-123456789"
+EnableTelegramAlerts = true
+MaxRetries = 5  // More retries for reliability
+RetryDelayMS = 1000  // Faster retries
+
+========== Indicator Settings ==========
+IndicatorName = "MyPriceAction.ex4"
+BuyBufferNumber = 0
+SellBufferNumber = 1
+SignalTiming = ENTRY_SAME_CANDLE
+UseCurrentTimeframe = true
+CustomTimeframe = PERIOD_H1
+
+========== Alert Settings ==========
+SendPopupAlert = true
+SendEmailAlert = true  // Enable email alerts
+PlaySoundAlert = true
+AlertSoundFile = "alert.wav"
+
+========== Advanced Settings ==========
+DuplicatePreventionBars = 3  // Less prevention for more alerts
+EnableDebugMode = false
+
+=================================================================
+TEMPLATE 6: Custom Buffer Configuration
+=================================================================
+
+========== Telegram Settings ==========
+TelegramBotToken = "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+TelegramChatID = "-123456789"
+EnableTelegramAlerts = true
+MaxRetries = 3
+RetryDelayMS = 2000
+
+========== Indicator Settings ==========
+IndicatorName = "CustomIndicator.ex4"
+BuyBufferNumber = 2  // Custom buy buffer
+SellBufferNumber = 3  // Custom sell buffer
+SignalTiming = ENTRY_SAME_CANDLE
+UseCurrentTimeframe = true
+CustomTimeframe = PERIOD_H1
+
+========== Alert Settings ==========
+SendPopupAlert = true
+SendEmailAlert = false
+PlaySoundAlert = true
+AlertSoundFile = "alert.wav"
+
+========== Advanced Settings ==========
+DuplicatePreventionBars = 5
+EnableDebugMode = false
+
+=================================================================
+HOW TO USE THESE TEMPLATES
+=================================================================
+
+1. Copy the template you want to use
+2. Paste into your EA settings (Inputs tab)
+3. Replace placeholder values:
+   - TelegramBotToken: Your actual bot token
+   - TelegramChatID: Your actual chat ID
+   - IndicatorName: Your .ex4 filename
+   - BuyBufferNumber/SellBufferNumber: Your indicator's buffer numbers
+4. Adjust other settings as needed
+5. Click OK to save
+
+=================================================================
+BUFFER NUMBER GUIDE
+=================================================================
+
+To find your indicator's buffer numbers:
+
+1. Attach your indicator to a chart
+2. Press Ctrl+D to open Data Window
+3. Find your indicator in the list
+4. Look for buffers with changing values:
+   - Buy signals: Buffer that shows non-zero when buy appears
+   - Sell signals: Buffer that shows non-zero when sell appears
+
+Common patterns:
+- Buffer 0: Buy signals (most common)
+- Buffer 1: Sell signals (most common)
+- Buffer 2-7: Additional data or unused
+
+Example Data Window:
+MyPriceAction
+  Buffer 0: 1.0 (buy signal) or 0.0 (no signal)
+  Buffer 1: 1.0 (sell signal) or 0.0 (no signal)
+  Buffer 2: 0.0 (unused)
+
+In this case: BuyBufferNumber = 0, SellBufferNumber = 1
+
+=================================================================
+TIMEFRAME GUIDE
+=================================================================
+
+UseCurrentTimeframe = true  (uses chart timeframe)
+UseCurrentTimeframe = false (uses CustomTimeframe)
+
+CustomTimeframe options:
+- PERIOD_M1  (1 Minute)
+- PERIOD_M5  (5 Minutes)
+- PERIOD_M15 (15 Minutes)
+- PERIOD_M30 (30 Minutes)
+- PERIOD_H1  (1 Hour)
+- PERIOD_H4  (4 Hours)
+- PERIOD_D1  (Daily)
+- PERIOD_W1  (Weekly)
+- PERIOD_MN1 (Monthly)
+
+=================================================================
+TROUBLESHOOTING TIPS
+=================================================================
+
+1. Always test with EnableDebugMode = true first
+2. Use SendPopupAlert = true to verify signals before Telegram
+3. Check MT4 Experts tab for error messages
+4. Verify your indicator works independently first
+5. Double-check buffer numbers with Data Window (Ctrl+D)
+6. Ensure AutoTrading is enabled in MT4
+7. Allow DLL imports in EA properties
+
+=================================================================
